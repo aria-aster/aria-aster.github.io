@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /data
+Disallow: /sky
+Disallow: /wonder
+Disallow: /image
+Disallow: /.git
+Disallow: /.github

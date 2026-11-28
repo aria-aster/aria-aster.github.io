@@ -1,0 +1,24 @@
+{
+  "format": "ekasane",
+  "version": "1.0.0",
+  "data": "data",
+  "id": "93a7b9a1-26b9-41ad-9653-ed66df6c6701",
+  "default": "anas1",
+  "font": [
+    "ZenMaruGothic-Regular.woff",
+    "ZenMaruGothic-Medium.woff",
+    "ZenMaruGothic-Light.woff",
+    "ZenMaruGothic-Bold.woff",
+    "ZenMaruGothic-Black.woff"
+  ],
+  "list": [
+    {
+      "name": "anas1 1922x1082",
+      "folder": "anas1"
+    },
+    {
+      "name": "anas2 1276x716",
+      "folder": "anas2"
+    }
+  ]
+}

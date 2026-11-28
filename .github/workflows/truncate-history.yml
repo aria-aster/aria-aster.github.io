@@ -1,0 +1,50 @@
+name: Truncate Commit History (Conditional)
+
+on:
+  schedule:
+    # 日本時間（JST）の毎日朝 04:00 ＝ UTCの毎日夜 19:00
+    - cron: '0 19 * * *'
+  workflow_dispatch: # 手動実行用のボタン（テスト用）
+
+jobs:
+  truncate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # 変更履歴をチェックするため全履歴を取得
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          # 過去24時間以内に新しいコミットがあるか確認
+          if [ -z "$(git log --since="24 hours ago" --oneline)" ]; then
+            echo "過去24時間以内に新しいコミットがありません。処理をスキップします。"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "新しいコミットを検知しました。履歴のリセットを実行します。"
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Reset to single commit
+        # 過去24時間以内にコミットがあった時だけ実行する
+        if: steps.check_changes.outputs.skip != 'true'
+        run: |
+          # 1. 履歴を持たない一時的な孤立ブランチ（orphan）を作成
+          git checkout --orphan temp-branch
+          
+          # 2. すべてのファイルをステージング
+          git add -A
+          
+          # 3. 新しく最初のコミットを作成
+          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "latest(auto)"
+          
+          # 4. メインブランチを削除して、一時ブランチをmainにリネーム
+          git branch -D main
+          git branch -m main
+          
+          # 5. リポジトリに強制プッシュして履歴を上書き
+          git push origin main --force

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+	<!-- Top -->
+    <url>
+        <loc>https://aria-aster.github.io/liber-fragmentorum.html</loc>
+    </url>
+
+	<!-- ReadMe -->
+    <url>
+        <loc>https://aria-aster.github.io/readme.html</loc>
+    </url>
+
+	<!-- 主要人物考察一覧 -->
+    <url>
+        <loc>https://aria-aster.github.io/note/%E4%B8%BB%E8%A6%81%E4%BA%BA%E7%89%A9%E8%80%83%E5%AF%9F%E4%B8%80%E8%A6%A7.html</loc>
+    </url>
+
+	<!-- 神獣の謳要約一覧 -->
+    <url>
+        <loc>https://aria-aster.github.io/note/%E7%A5%9E%E7%8D%A3%E3%81%AE%E8%AC%B3%E8%A6%81%E7%B4%84%E4%B8%80%E8%A6%A7.html</loc>
+    </url>
+
+	<!-- 天使の謳要約一覧 -->
+    <url>
+        <loc>https://aria-aster.github.io/note/%E5%A4%A9%E4%BD%BF%E3%81%AE%E8%AC%B3%E8%A6%81%E7%B4%84%E4%B8%80%E8%A6%A7.html</loc>
+    </url>
+
+
+</urlset>

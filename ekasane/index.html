@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ekasane ジェネレーター</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Noto Sans JP", sans-serif; background: #f2f3f5; color: #222; }
+  .page { max-width: 1280px; margin: 0 auto; padding: 12px 16px 32px; }
+
+  header { position: relative; display: flex; align-items: center; gap: 8px; padding: 8px 0 12px; }
+  .hbtn { font-size: 14px; padding: 8px 14px; border: 1px solid #c8ccd2; background: #fff; border-radius: 6px; cursor: pointer; }
+  .hbtn:disabled { opacity: .45; cursor: default; }
+  .spacer { flex: 1; }
+  .app-title { font-size: 15px; color: #666; }
+
+  .dropdown { position: absolute; top: 52px; z-index: 40; background: #fff; border: 1px solid #c8ccd2; border-radius: 8px;
+              box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 6px; min-width: 240px; }
+  .dropdown[hidden] { display: none; }
+  #menuPanel { left: 0; }
+  #templatePanel { left: 150px; }
+  #subPanel { left: 380px; min-width: 340px; }
+  .dropdown .item { padding: 8px 10px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+  .dropdown .item:hover { background: #eef3fa; }
+  .dropdown .item.disabled { opacity: .45; cursor: default; }
+  .dropdown .item.disabled:hover { background: transparent; }
+  .dropdown .item.current { font-weight: 700; }
+  #subPanel .author { padding: 8px 10px; font-size: 14px; color: #444; border-bottom: 1px solid #eee; margin-bottom: 6px; }
+  .save-row { display: flex; gap: 6px; padding: 4px 10px 8px; }
+  .save-row input { flex: 1; font-size: 14px; padding: 7px 8px; border: 1px solid #c8ccd2; border-radius: 6px; }
+  .data-row { display: flex; align-items: center; gap: 8px; padding: 6px 10px; font-size: 13px; }
+  .data-row .nm { font-weight: 600; }
+  .data-row .dt { color: #888; }
+  .save-empty { padding: 6px 10px; font-size: 13px; color: #999; }
+
+  #errorBand { background: #fdecea; border: 1px solid #e5a49e; color: #8c2b21; border-radius: 8px;
+               padding: 10px 14px; font-size: 14px; margin-bottom: 12px; }
+  #errorBand[hidden] { display: none; }
+
+  main { display: flex; gap: 16px; align-items: flex-start; }
+  #inputColumn { flex: 1; min-width: 0; background: #fff; border: 1px solid #e0e2e6; border-radius: 10px; padding: 16px; }
+  #previewColumn { width: 520px; flex: none; background: #fff; border: 1px solid #e0e2e6; border-radius: 10px; padding: 16px; }
+  .no-template { color: #999; font-size: 14px; padding: 12px 4px; }
+
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .field input[type="text"], .field input[type="number"], .field select, .field textarea {
+    width: 100%; font-size: 15px; padding: 8px 10px; border: 1px solid #9aa0a8; border-radius: 6px; font-family: inherit; background: #fff; }
+  .field textarea { min-height: 64px; resize: vertical; }
+  .field .range { font-size: 12px; color: #888; margin-left: 8px; }
+  .field .note { font-size: 12px; color: #999; margin-top: 4px; }
+  .field .ferr { font-size: 13px; color: #c0392b; margin-top: 4px; }
+  .field .ferr:empty { display: none; }
+  .inline { display: flex; align-items: center; gap: 8px; }
+  .cand { width: 44px; height: 44px; border-radius: 6px; border: 2px solid #d5d8dd; cursor: pointer; object-fit: cover; background: #eee; }
+  .cand.selected { border-color: #2f6fd0; }
+  .sbtn { font-size: 13px; padding: 6px 10px; border: 1px solid #c8ccd2; background: #fff; border-radius: 6px; cursor: pointer; }
+  .sbtn:disabled { opacity: .45; cursor: default; }
+  button.primary { font-size: 14px; padding: 8px 16px; border: none; background: #2f6fd0; color: #fff; border-radius: 6px; cursor: pointer; }
+  button.primary:disabled { opacity: .45; cursor: default; }
+
+  .rich { background: transparent; }
+  .rich-toolbar { display: flex; align-items: center; gap: 6px; padding: 2px 6px; border: 1px solid #8a919c; border-bottom: 1px solid #d8dbe0; background: #f7f8fa; border-radius: 6px 6px 0 0; flex-wrap: nowrap; }
+  .rich-toolbar .rich-label { font-size: 11px; color: #555; white-space: nowrap; flex: 0 0 auto; }
+  .rich-toolbar select.fontset { font-size: 12px; height: 22px; padding: 0 4px; border: 1px solid #8a919c; border-radius: 4px; background: #fff; min-width: 0; flex: 1 1 auto; }
+  .rich-area { min-height: 38px; padding: 8px 10px; font-size: 15px; white-space: pre-wrap; word-break: break-word; outline: none;
+               border: 1px solid #8a919c; border-top: none; border-radius: 0 0 6px 6px; background: #fff; }
+  .rich:focus-within .rich-toolbar, .rich:focus-within .rich-area { border-color: #2f6fd0; }
+  .rich:focus-within .rich-area { box-shadow: 0 0 0 2px rgba(47,111,208,.15); }
+  .rich-area.multiline { min-height: 64px; }
+
+  #previewBox { background: #eceff3; border-radius: 8px; min-height: 240px; display: flex; align-items: center; justify-content: center; padding: 8px; }
+  #previewImg { max-width: 100%; height: auto; display: block; }
+  #previewImg[hidden] { display: none; }
+  #previewPlaceholder { color: #999; font-size: 14px; }
+  .output-row { display: flex; gap: 8px; margin-top: 12px; }
+  #warningArea { margin-top: 14px; }
+  #warningArea h3 { font-size: 13px; margin: 0 0 6px; color: #8a6d1a; }
+  #warningArea ul { margin: 0; padding-left: 18px; font-size: 13px; color: #6b5510; }
+  #warningArea:empty { display: none; }
+
+  #dialogBackdrop { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; z-index: 100; }
+  #dialogBackdrop[hidden] { display: none; }
+  #dialog { background: #fff; border-radius: 10px; max-width: 520px; width: calc(100% - 40px); padding: 18px; }
+  #dialog h2 { font-size: 16px; margin: 0 0 10px; }
+  #dialog .body { font-size: 14px; max-height: 40vh; overflow: auto; }
+  #dialog .body ul { margin: 0; padding-left: 18px; }
+  #dialog .buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+  #loadStatus { position: fixed; top: 10px; left: 10px; z-index: 90; width: 250px; background: #fff; border: 1px solid #c8ccd2; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,.12); padding: 8px 12px; }
+  #loadStatus[hidden] { display: none; }
+  .load-bar { position: relative; height: 4px; background: #e4e6ea; border-radius: 2px; overflow: hidden; }
+  .load-bar-fill { position: absolute; top: 0; left: 0; height: 100%; width: 40%; background: #2f6fd0; border-radius: 2px; animation: loadslide 1.2s ease-in-out infinite; }
+  @keyframes loadslide { 0% { left: -40%; } 100% { left: 100%; } }
+  #loadStatusText { font-size: 12px; color: #333; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div id="loadStatus" hidden>
+  <div class="load-bar"><div class="load-bar-fill"></div></div>
+  <div id="loadStatusText"></div>
+</div>
+<div class="page">
+  <header>
+    <button class="hbtn" id="menuBtn">☰ メニュー</button>
+    <button class="hbtn" id="templateBtn" disabled>テンプレート：― ▾</button>
+    <button class="hbtn" id="subBtn">サブメニュー ▾</button>
+    <div class="spacer"></div>
+    <div class="app-title">Ekasane ジェネレーター</div>
+
+    <div class="dropdown" id="menuPanel" hidden>
+      <div class="item" id="menuOpen">Ekasaneパッケージを開く</div>
+      <div class="item" id="menuClearCache">キャッシュの削除</div>
+      <div class="item disabled" id="menuDeleteSaves">保存データの削除</div>
+    </div>
+
+    <div class="dropdown" id="templatePanel" hidden></div>
+
+    <div class="dropdown" id="subPanel" hidden>
+      <div class="author" id="authorRow" hidden>テンプレート作者：<span id="authorName"></span></div>
+      <div class="save-row">
+        <input type="text" id="saveName" placeholder="保存名">
+        <button class="primary" id="saveBtn" disabled>保存</button>
+      </div>
+      <div id="saveList"><div class="save-empty">保存データはありません</div></div>
+    </div>
+  </header>
+
+  <div id="errorBand" hidden></div>
+
+  <main>
+    <section id="inputColumn">
+      <div class="no-template" id="noTemplateNote">パッケージを開くと、ここに入力欄が出ます。</div>
+      <div id="inputFields"></div>
+    </section>
+
+    <section id="previewColumn">
+      <div id="previewBox">
+        <span id="previewPlaceholder">プレビューはまだありません</span>
+        <img id="previewImg" alt="カードプレビュー" hidden>
+      </div>
+      <div class="output-row">
+        <button class="primary" id="previewBtn" disabled>プレビュー</button>
+        <button class="primary" id="outputBtn" disabled>最終出力</button>
+      </div>
+      <div id="warningArea"></div>
+    </section>
+  </main>
+</div>
+
+<div id="dialogBackdrop" hidden>
+  <div id="dialog">
+    <h2 id="dialogTitle"></h2>
+    <div class="body" id="dialogBody"></div>
+    <div class="buttons">
+      <button class="sbtn" id="dialogCancel">やめる</button>
+      <button class="primary" id="dialogOk">OK</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="packageFileInput" accept=".ekn,.zip" hidden>
+
+<script type="module" src="./generator.js"></script>
+</body>
+</html>

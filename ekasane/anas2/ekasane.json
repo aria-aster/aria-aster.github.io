@@ -1,0 +1,233 @@
+{
+  "common": {
+    "author": "ekasane.a2",
+    "height": 716,
+    "id": "anas-v2",
+    "output": {
+      "name": "anas-v1.png",
+      "type": "image/png"
+    },
+    "title": "謳-v1",
+    "version": "1.0.0",
+    "width": 1276,
+    "input-order": "ascending"
+  },
+  "font": [
+    {
+      "family": [
+        "Zen Maru Gothic",
+        "メイリオ",
+        "M PLUS Rounded 1c",
+        "sans-serif"
+      ],
+      "id": "charnamefont",
+      "color": "#B8D2D8FF",
+      "size": 24,
+      "weight": 500
+    },
+    {
+      "family": [
+        "Zen Maru Gothic",
+        "メイリオ",
+        "M PLUS Rounded 1c",
+        "sans-serif"
+      ],
+      "id": "utatextfont",
+      "color": "#B8D2D8FF",
+      "size": 24,
+      "weight": 500
+    }
+  ],
+  "material": [
+    {
+      "id": "char1",
+      "label": "キャラ謳画",
+      "material-type": "image",
+      "path": "sanzu.png"
+    },
+    {
+      "id": "utaframe",
+      "label": "天使の謳フレーム",
+      "material-type": "image",
+      "path": "utaframe_w1276.png",
+      "trimming": { "x": 0, "y": 0, "width": 1276, "height": 400 }
+    },
+    {
+      "id": "uta1",
+      "label": "天使の謳１章",
+      "material-type": "image",
+      "path": "uta001_405x49.png"
+    },
+    {
+      "id": "uta2",
+      "label": "uta天使の謳２章",
+      "material-type": "image",
+      "path": "uta002_405x49.png"
+    },
+    {
+      "id": "uta3",
+      "label": "uta天使の謳３章",
+      "material-type": "image",
+      "path": "uta003_405x49.png"
+    }
+  ],
+  "object": [
+    {
+      "crop": "center",
+      "height": 1082,
+      "id": "char1img",
+      "label": "背景画像(必要サイズ：1276x716 ※自動拡大しません、未選択はサンズ画像)",
+      "material-id": "char1",
+      "type": "image",
+      "value": {
+        "function": [
+          "input", true
+        ]
+      },
+      "width": 1922,
+      "x": 0,
+      "y": 0,
+      "z": 1
+    },
+    {
+      "border-width": 0,
+      "figure": "rect",
+      "fill-color": "#000005CC",
+      "height": 716,
+      "id": "hp.track",
+      "label": "黒下地",
+      "type": "shape",
+      "value": null,
+      "width": 1276,
+      "x": 0,
+      "y": 0,
+      "z": 2
+    },
+    {
+      "crop": "center",
+      "height": 1082,
+      "id": "utaframebase",
+      "label": "謳フレーム",
+      "material-id": "utaframe",
+      "type": "image",
+      "value": "",
+      "width": 1922,
+      "x": 0,
+      "y": 0,
+      "z": 3
+    },
+    {
+      "crop": "center",
+      "height": 1082,
+      "id": "utaNo",
+      "label": "章選択",
+      "material-id": "uta1",
+      "type": "image",
+      "value": {
+        "function": [
+          "input", false, "uta1", "uta2", "uta3"
+        ]
+      },
+      "width": 1922,
+      "x": 101,
+      "y": 41,
+      "z": 4
+    },
+    {
+      "font": "utatextfont",
+      "id": "utatext1",
+      "label": "謳テキスト１",
+      "max-length": 120,
+      "multiline": true,
+      "type": "text",
+      "value": {
+        "function": [
+          "input"
+        ]
+      },
+      "height": 136,
+      "width": 928,
+      "line-height": 42,
+      "x": 330,
+      "y": 230,
+      "z": 11
+    },
+    {
+      "font": "utatextfont",
+      "height": 120,
+      "id": "utatext2",
+      "label": "謳テキスト２",
+      "max-length": 120,
+      "multiline": true,
+      "type": "text",
+      "value": {
+        "function": [
+          "input"
+        ]
+      },
+      "width": 928,
+      "line-height": 42,
+      "x": 470,
+      "y": 340,
+      "z": 12
+    },
+    {
+      "font": "utatextfont",
+      "height": 120,
+      "id": "utatext3",
+      "label": "謳テキスト３",
+      "max-length": 120,
+      "multiline": true,
+      "type": "text",
+      "value": {
+        "function": [
+          "input"
+        ]
+      },
+      "width": 928,
+      "line-height": 42,
+      "x": 590,
+      "y": 460,
+      "z": 13
+    },
+    {
+      "font": "utatextfont",
+      "height": 120,
+      "id": "utatext4",
+      "label": "謳テキスト４",
+      "max-length": 120,
+      "multiline": true,
+      "type": "text",
+      "value": {
+        "function": [
+          "input"
+        ]
+      },
+      "width": 928,
+      "line-height": 42,
+      "x": 670,
+      "y": 580,
+      "z": 14
+    },
+    {
+      "font": "charnamefont",
+      "height": 56,
+      "id": "charname",
+      "label": "キャラ名",
+      "max-length": 120,
+      "multiline": false,
+      "align": "center",
+      "vertical-align:": "middle",
+      "type": "text",
+      "value": {
+        "function": [
+          "input"
+        ]
+      },
+      "width": 550,
+      "x": 355,
+      "y": 132,
+      "z": 10
+    }
+  ]
+}
